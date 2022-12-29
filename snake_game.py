@@ -2,6 +2,7 @@ import random
 from pygame import *
 import pygame
 import time
+import tkinter.messagebox
 
 init()
 clock = pygame.time.Clock()
@@ -90,6 +91,7 @@ while running:
         for i in range(len(Snake.length)-1,0,int(-(13/Snake.SPEED)*(FPS/24))):
             Snake.body.append(draw.rect(screen, Snake.COLOR, [Snake.length[i][0],Snake.length[i][1],screen.get_width()/Snake.SIZE*9/5,screen.get_height()/Snake.SIZE*16/5]))    
         
+        # Exit on touching the tail
         for i in range(int(len(Snake.length)-8*(FPS/24)),0,int(-(13/Snake.SPEED)*(FPS/24))):
             if snake.centerx >= Snake.length[i][0] and snake.centerx <= Snake.length[i][0] + screen.get_width()/Snake.SIZE*9/5:
                 if snake.centery >= Snake.length[i][1] and snake.centery <= Snake.length[i][1] + screen.get_height()/Snake.SIZE*16/5:
@@ -102,8 +104,8 @@ while running:
 
     # Food position and behaviour
 
-    if snake.center[0] <= food.bottomright[0] and snake.center[0] >= food.topleft[0] and time.time() >= delay2:
-        if snake.center[1] <= food.bottomright[1] and snake.center[1] >= food.topleft[1]:
+    if snake.center[0] <= food.bottomright[0]+10 and snake.center[0] >= food.topleft[0]-10 and time.time() >= delay2:
+        if snake.center[1] <= food.bottomright[1]+10 and snake.center[1] >= food.topleft[1]-10:
             Food.POS=[random.randint(50,screen.get_width()-50),random.randint(50,screen.get_height()-50)]
             add = time.time()+0.16
             ad+=12
@@ -116,5 +118,5 @@ while running:
 
     display.update()
     clock.tick(FPS)
-    
-print(f"Your score: {score}")
+
+tkinter.messagebox.showinfo("Score",f"Your score: {score}")
